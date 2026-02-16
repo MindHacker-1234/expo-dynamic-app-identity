@@ -1,0 +1,10 @@
+{
+  "platforms": ["ios", "android"],
+  "ios": {
+    "modules": ["ExpoDynamicAppIdentityModule"]
+  },
+  "android": {
+    "modules": ["expo.modules.dynamicappidentity.ExpoDynamicAppIdentityModule"],
+    "packages": ["expo.modules.dynamicappidentity.ExpoDynamicAppIdentityPackage"]
+  }
+}
