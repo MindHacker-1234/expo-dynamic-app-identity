@@ -9,13 +9,6 @@ import android.util.Log
 import android.widget.Toast
 import expo.modules.core.interfaces.ReactActivityLifecycleListener
 
-/**
- * Lifecycle listener that applies icon changes when app goes to background.
- * This prevents the app from crashing/exiting when icon is changed.
- * 
- * FIX: Unlike community plugin, we ENABLE target first, then DISABLE others.
- * This ensures there's always at least one enabled launcher activity.
- */
 class ExpoDynamicAppIdentityReactActivityLifecycleListener : ReactActivityLifecycleListener {
 
     companion object {
@@ -65,13 +58,6 @@ class ExpoDynamicAppIdentityReactActivityLifecycleListener : ReactActivityLifecy
         }
     }
 
-    /**
-     * Apply the icon change with IMPROVED ordering:
-     * 1. ENABLE target alias FIRST
-     * 2. DISABLE other aliases SECOND
-     * 
-     * This ensures there's always at least one enabled launcher activity.
-     */
     private fun applyIconChange(activity: Activity) {
         val targetIcon = SharedObject.pendingIcon
         if (targetIcon.isEmpty()) {
@@ -91,7 +77,6 @@ class ExpoDynamicAppIdentityReactActivityLifecycleListener : ReactActivityLifecy
         }
 
         try {
-            // Get all activities including disabled ones
             val packageInfo = pm.getPackageInfo(
                 packageName,
                 PackageManager.GET_ACTIVITIES or PackageManager.GET_DISABLED_COMPONENTS
@@ -99,7 +84,6 @@ class ExpoDynamicAppIdentityReactActivityLifecycleListener : ReactActivityLifecy
 
             val targetComponent = ComponentName(packageName, targetAlias)
             
-            // Verify target exists
             val targetExists = packageInfo.activities?.any { 
                 it.name == targetAlias || it.name == ".MainActivity${if (targetIcon == DEFAULT_ICON) "DEFAULT" else targetIcon}"
             } == true
@@ -110,23 +94,16 @@ class ExpoDynamicAppIdentityReactActivityLifecycleListener : ReactActivityLifecy
                 return
             }
 
-            // ============================================================
-            // FIX: ENABLE TARGET FIRST (ensures always ≥1 launcher active)
-            // ============================================================
-            Log.i(TAG, "Step 1: Enabling target alias: $targetAlias")
+            Log.i(TAG, "Enabling target alias: $targetAlias")
             pm.setComponentEnabledSetting(
                 targetComponent,
                 PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
                 PackageManager.DONT_KILL_APP
             )
 
-            // ============================================================
-            // Step 2: DISABLE all other MainActivity* aliases
-            // ============================================================
             packageInfo.activities?.forEach { activityInfo ->
                 val activityName = activityInfo.name
                 
-                // Only process MainActivity aliases (not the base MainActivity)
                 if (activityName.contains("MainActivity") && 
                     activityName != ".MainActivity" &&
                     activityName != "$packageName.MainActivity" &&
@@ -137,7 +114,7 @@ class ExpoDynamicAppIdentityReactActivityLifecycleListener : ReactActivityLifecy
                     val currentState = pm.getComponentEnabledSetting(componentName)
                     
                     if (currentState != PackageManager.COMPONENT_ENABLED_STATE_DISABLED) {
-                        Log.i(TAG, "Step 2: Disabling alias: $activityName")
+                        Log.i(TAG, "Disabling alias: $activityName")
                         pm.setComponentEnabledSetting(
                             componentName,
                             PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
@@ -149,7 +126,6 @@ class ExpoDynamicAppIdentityReactActivityLifecycleListener : ReactActivityLifecy
 
             Log.i(TAG, "Icon change complete: $targetIcon")
 
-            // Show toast if requested
             if (SharedObject.showToast) {
                 Handler(Looper.getMainLooper()).post {
                     val message = if (targetIcon == DEFAULT_ICON) {

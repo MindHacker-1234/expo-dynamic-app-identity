@@ -1,6 +1,6 @@
 {
   "name": "@praneeth26/expo-dynamic-app-identity",
-  "version": "1.1.1",
+  "version": "1.2.0",
   "description": "Comprehensive Expo plugin for dynamic app icon and label switching. Features: DEFAULT alias support, deep link migration, app label switching, immediate switch, toast feedback, and adaptive icon support.",
   "main": "build/index.js",
   "types": "build/index.d.ts",
