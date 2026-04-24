@@ -288,7 +288,7 @@ const withAndroidManifestMod: ConfigPlugin<PluginConfig> = (config, pluginConfig
                 'android:enabled': 'true',
                 'android:exported': 'true',
                 'android:icon': '@mipmap/ic_launcher',
-                'android:roundIcon': '@mipmap/ic_launcher_round',
+                'android:roundIcon': '@mipmap/ic_launcher',
                 'android:label': defaultLabel,
                 'android:targetActivity': '.MainActivity',
             },
