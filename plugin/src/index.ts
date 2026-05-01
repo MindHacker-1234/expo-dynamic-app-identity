@@ -303,7 +303,6 @@ const withAndroidManifestMod: ConfigPlugin<PluginConfig> = (config, pluginConfig
         const icons = pluginConfig.icons || {};
         for (const [iconName, iconConfig] of Object.entries(icons)) {
             const resolved = resolveIconConfig(iconConfig);
-            const iconLabel = resolved.label || defaultLabel;
 
             const aliasIntentFilters: any[] = [
                 {
@@ -327,7 +326,7 @@ const withAndroidManifestMod: ConfigPlugin<PluginConfig> = (config, pluginConfig
                     'android:exported': 'true',
                     'android:icon': iconResource,
                     'android:roundIcon': roundIconResource,
-                    'android:label': iconLabel,
+                    'android:label': defaultLabel,
                     'android:targetActivity': '.MainActivity',
                 },
                 'intent-filter': aliasIntentFilters,
