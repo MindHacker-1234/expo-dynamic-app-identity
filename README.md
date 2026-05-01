@@ -2,6 +2,8 @@
 
 A comprehensive Expo plugin for dynamic app icon and label switching with production-ready features and fixes.
 
+**Source / repository:** [github.com/MindHacker-1234/expo-dynamic-app-identity](https://github.com/MindHacker-1234/expo-dynamic-app-identity)
+
 ## 🎯 Why This Plugin?
 
 This plugin provides a production-ready solution for dynamic app icon and label switching with comprehensive fixes:

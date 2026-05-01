@@ -35,9 +35,10 @@
     "@types/node": "^20.0.0",
     "typescript": "^5.0.0"
   },
+  "homepage": "https://github.com/MindHacker-1234/expo-dynamic-app-identity",
   "repository": {
     "type": "git",
-    "url": "https://github.com/praneeth26/expo-dynamic-app-identity.git"
+    "url": "https://github.com/MindHacker-1234/expo-dynamic-app-identity.git"
   },
   "files": [
     "build",
